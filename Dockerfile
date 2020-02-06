@@ -1,8 +1,8 @@
 # METADATA
 FROM debian:testing-slim
-LABEL maintainer="joe.stratton@asu.edu"
+LABEL maintainer="KKTony's Docker Lab"
 
-ARG TMOD_VERSION=0.11.5
+ARG TMOD_VERSION=0.11.6.2
 ARG TERRARIA_VERSION=1353
 
 # system update
@@ -34,3 +34,4 @@ EXPOSE 7777
 
 # start server
 ENTRYPOINT [ "/terraria-server/tModLoaderServer", "-config", "config.txt" ]
+
