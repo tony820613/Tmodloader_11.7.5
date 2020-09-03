@@ -2,7 +2,7 @@
 FROM debian:testing-slim
 LABEL maintainer="KKTony's Docker Lab"
 
-ARG TMOD_VERSION=0.11.6.2
+ARG TMOD_VERSION=0.11.7.5
 ARG TERRARIA_VERSION=1353
 
 # system update
