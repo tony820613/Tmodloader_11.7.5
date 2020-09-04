@@ -1,37 +1,46 @@
-# METADATA
-FROM debian:testing-slim
-LABEL maintainer="KKTony's Docker Lab"
+FROM frolvlad/alpine-glibc:alpine-3.10 as build
 
 ARG TMOD_VERSION=0.11.7.5
-ARG TERRARIA_VERSION=1405
+ARG TERRARIA_VERSION=1353
 
-# system update
-RUN apt-get -y update &&\
-    apt-get -y install wget unzip &&\
-    apt-get -y clean
+RUN apk update &&\
+    apk add --no-cache --virtual build curl unzip &&\
+    apk add --no-cache -X http://dl-cdn.alpinelinux.org/alpine/edge/testing mono
 
 WORKDIR /terraria-server
 
-# get vanilla server
-RUN wget "https://terraria.org/system/dedicated_servers/archives/000/000/039/original/terraria-server-1405.zip" &&\
+RUN cp /usr/lib/libMonoPosixHelper.so .
+
+RUN curl -SLO "http://terraria.org/server/terraria-server-${TERRARIA_VERSION}.zip" &&\
     unzip terraria-server-*.zip &&\
     rm terraria-server-*.zip &&\
     cp --verbose -a "${TERRARIA_VERSION}/Linux/." . &&\
-    rm -rf "${TERRARIA_VERSION}"
+    rm -rf "${TERRARIA_VERSION}" &&\
+    rm TerrariaServer.bin.x86 TerrariaServer.exe
 
-# add in tModLoader
-RUN  wget -qO - "https://github.com/tModLoader/tModLoader/releases/download/v0.11.7.5/tModLoader.Linux.v0.11.7.5.tar.gz" | tar -xvz &&\
-    chmod u+x tModLoaderServer* Terraria TerrariaServer.*
+RUN curl -SL "https://github.com/tModLoader/tModLoader/releases/download/v${TMOD_VERSION}/tModLoader.Linux.v${TMOD_VERSION}.tar.gz" | tar -xvz &&\
+    rm -r lib tModLoader.bin.x86 tModLoaderServer.bin.x86 &&\
+    chmod u+x tModLoaderServer*
 
-# access data directory
+FROM frolvlad/alpine-glibc:alpine-3.10
+
+WORKDIR /terraria-server
+COPY --from=build /terraria-server ./
+
+RUN apk update &&\
+    apk add --no-cache procps tmux
 RUN ln -s ${HOME}/.local/share/Terraria/ /terraria
+#COPY inject.sh /usr/local/bin/inject
+#COPY handle-idle.sh /usr/local/bin/handle-idle
 
-# Add default config file
-COPY config.txt .
-
-# ports used
 EXPOSE 7777
+#ENV TMOD_SHUTDOWN_MSG="Shutting down!"
+#ENV TMOD_AUTOSAVE_INTERVAL="*/10 * * * *"
+#ENV TMOD_IDLE_CHECK_INTERVAL=""
+#ENV TMOD_IDLE_CHECK_OFFSET=0
 
-# start server
+COPY config.txt ./
+#RUN chmod +x entrypoint.sh /usr/local/bin/inject /usr/local/bin/handle-idle
+
+#ENTRYPOINT [ "/terraria-server/entrypoint.sh" ]
 ENTRYPOINT [ "/terraria-server/tModLoaderServer", "-config", "config.txt" ]
-
