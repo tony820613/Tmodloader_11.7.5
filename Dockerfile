@@ -13,7 +13,7 @@ RUN apt-get -y update &&\
 WORKDIR /terraria-server
 
 # get vanilla server
-RUN wget "http://terraria.org/server/terraria-server-${TERRARIA_VERSION}.zip" &&\
+RUN wget "https://terraria.org/system/dedicated_servers/archives/000/000/039/original/terraria-server-1405.zip" &&\
     unzip terraria-server-*.zip &&\
     rm terraria-server-*.zip &&\
     cp --verbose -a "${TERRARIA_VERSION}/Linux/." . &&\
