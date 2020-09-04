@@ -39,7 +39,7 @@ EXPOSE 7777
 #ENV TMOD_IDLE_CHECK_INTERVAL=""
 #ENV TMOD_IDLE_CHECK_OFFSET=0
 
-COPY config.txt ./
+COPY config.txt entrypoint.sh ./
 RUN chmod +x entrypoint.sh
 ENTRYPOINT [ "/terraria-server/entrypoint.sh" ]
 #ENTRYPOINT [ "/terraria-server/tModLoaderServer", "-config", "config.txt" ]
