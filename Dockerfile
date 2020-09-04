@@ -42,5 +42,5 @@ EXPOSE 7777
 COPY config.txt ./
 #RUN chmod +x entrypoint.sh /usr/local/bin/inject /usr/local/bin/handle-idle
 
-#ENTRYPOINT [ "/terraria-server/entrypoint.sh" ]
-ENTRYPOINT [ "/terraria-server/tModLoaderServer", "-config", "config.txt" ]
+ENTRYPOINT [ "/terraria-server/entrypoint.sh" ]
+#ENTRYPOINT [ "/terraria-server/tModLoaderServer", "-config", "config.txt" ]
