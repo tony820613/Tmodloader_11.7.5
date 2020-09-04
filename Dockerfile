@@ -20,7 +20,7 @@ RUN wget "https://terraria.org/system/dedicated_servers/archives/000/000/039/ori
     rm -rf "${TERRARIA_VERSION}"
 
 # add in tModLoader
-RUN  wget -qO - "https://github.com/tModLoader/tModLoader/releases/download/v${TMOD_VERSION}/tModLoader.Linux.v${TMOD_VERSION}.tar.gz" | tar -xvz &&\
+RUN  wget -qO - "https://github.com/tModLoader/tModLoader/releases/download/v0.11.7.5/tModLoader.Linux.v0.11.7.5.tar.gz" | tar -xvz &&\
     chmod u+x tModLoaderServer* Terraria TerrariaServer.*
 
 # access data directory
