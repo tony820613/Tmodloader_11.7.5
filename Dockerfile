@@ -3,7 +3,7 @@ FROM debian:testing-slim
 LABEL maintainer="KKTony's Docker Lab"
 
 ARG TMOD_VERSION=0.11.7.5
-ARG TERRARIA_VERSION=1353
+ARG TERRARIA_VERSION=1405
 
 # system update
 RUN apt-get -y update &&\
